@@ -3,14 +3,14 @@ My motivation to create this library was to have access to Agentic Workflow whic
 
 # Using the AgentTools Class
 
-To use the `AgentTools` class from the `AgentTools` library, follow the steps below:
+To use the `AgentTools` class from the `Quant_AgentTools` library, follow the steps below:
 
 ## Importing the Class
 
-First, import the `AgentTools` class from the `AgentTools.agent_tools` module:
+First, import the `AgentTools` class from the `Quant_AgentTools.agent_tools` module:
 
 ```python
-from AgentTool.agent_tools import AgentTools
+from Quant_AgentTools.agent_tools import AgentTools
 ```
 # Creating an Instance
 
