@@ -1,9 +1,0 @@
-README.md
-setup.py
-AgentTools/__init__.py
-AgentTools/agent_tools.py
-AgentTools.egg-info/PKG-INFO
-AgentTools.egg-info/SOURCES.txt
-AgentTools.egg-info/dependency_links.txt
-AgentTools.egg-info/requires.txt
-AgentTools.egg-info/top_level.txt
