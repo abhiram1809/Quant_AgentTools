@@ -246,7 +246,7 @@ ARGUMENTS: """)
         try:
             if len(self.tools)==0:
                 print('No tools added, Switching to General Chat')
-                output = self.model.generate(f"""You are an AI Assistant, expert at answering General Questions. Try to answer in 4-5 sentences or less. 
+                output = self.model.generate(f"""You are an AI Assistant, expert at answering General Questions. Help the user with their query. 
 
     USER: {query}
 
