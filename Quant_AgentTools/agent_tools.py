@@ -146,7 +146,10 @@ class AgentTools:
         Returns:
         - The output of the Agent Workflow.
         """
-        model = self._instance.model
+        try:
+            model = self._instance.model
+        except:
+            return "Model Not Intialised, Initialise a model by using a GPT4all instance. or use the use_model() Class method."
         func_choice = model.generate(f"""You are an AI assistant that is really good with choosing tools to execute. Help as much as you can. The tools are as follows: {self.list_tools()}
 Only return the tool/tools name out the list of tools provided for the given task in the format given below. Return multiple if needed
 QUERY: (Query by user)
