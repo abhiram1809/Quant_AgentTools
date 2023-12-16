@@ -1,7 +1,6 @@
 # Ignore build and dist directories
 build/
 dist/
-
 # Ignore Quant_AgentTools.egg-info directory
 Quant_AgentTools.egg-info/
 
