@@ -1,5 +1,11 @@
-# AgentTools
+# Quant_AgentTools
 My motivation to create this library was to have access to Agentic Workflow which has been well developed for OpenAI Models, but not for Open Source Quantized models that work on cpu and can leverage multi-threading. A big thanks to [GPT4All](https://github.com/nomic-ai/gpt4all) for making this possible.  
+
+## Install the Library
+
+```bash
+pip install Quant-AgentTools 
+```
 
 # Using the AgentTools Class
 
