@@ -1,4 +1,18 @@
 # Quant_AgentTools
+🚀 Revolutionize your workflow with AgentTools! 🤖💼
+
+AgentTools introduces the power of quantized models, enabling seamless local CPU execution for lightning-fast processing. 🌐⚡
+
+💡 Key Advantages:
+
+- Utilize quantized models for efficient local execution.
+- Experience accelerated performance on CPU setups.
+- Craft a responsive and dynamic workflow with ease.
+- Combine the flexibility of custom functions with the speed of quantized models.
+- Unlock unparalleled efficiency in your AI-driven tasks! 🚀🔍
+
+
+## Motivation
 My motivation to create this library was to have access to Agentic Workflow which has been well developed for OpenAI Models, but not for Open Source Quantized models that work on cpu and can leverage multi-threading. A big thanks to [GPT4All](https://github.com/nomic-ai/gpt4all) for making this possible.  
 
 ## Install the Library
