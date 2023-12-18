@@ -1,6 +1,7 @@
 from pydantic import BaseModel, parse_obj_as
 from typing import List, Union
 from gpt4all import GPT4All
+from prompts import GENERAL_CHAT, TOOL_CHOICE, AGENT_INITIAL_STEP, AGENT_DEFAULT_STEP
 
 class ToolArguments(BaseModel):
     args: List[Union[ int, float, str]]
@@ -150,90 +151,25 @@ class AgentTools:
             model = self._instance.model
         except:
             return "Model Not Intialised, Initialise a model by using a GPT4all instance. or use the use_model() Class method."
-        func_choice = model.generate(f"""You are an AI assistant that is really good with choosing tools to execute. Help as much as you can. The tools are as follows: {self.list_tools()}
-Only return the tool/tools name out the list of tools provided for the given task in the format given below. Return multiple if needed
-QUERY: (Query by user)
-TOOL: (Tool/Tools to be used seperated by comma)
-##Examples
-QUERY: What is 89 times 44?
-TOOL: mul
-
-QUERY: What is 89 times 44, divided by 3?
-TOOL: mul,div
-
-##Real Execution
-QUERY: "{query}"?
-TOOL: """, max_tokens=200)
+        func_choice = model.generate(TOOL_CHOICE.substitute(tools = self.list_tools(), query = query), max_tokens=200)
         func_choice = func_choice.replace(" ", "")
         func_list = [func for func in func_choice.split(',')]
         print(f"Chosen function {func_choice}")
         step = 1
         for func in func_list:
             if step==1:
-                func_args = model.generate(f"""You are an AI assistant that is an expert with arguments for python functions. Help as much as you can.
-Only Return the arguments to be passed to the chosen python function, Arguments could be one or multiple, based on the User Query in the format given below. 
-###STRICT INSTRUCTION:
-If the function uses query as argument, pass the query in the arguments.
-###Format:
-
-QUERY: (Query by User)
-CHOSEN FUNCTION: (Function Chosen for the Task)
-ARGUMENTS: (Argument/ List of Arguments)
-
-###Example:
-
-QUERY: What is 23 times 87?
-CHOSEN FUNCTION: multiply(a, b)
-ARGUMENTS: 23, 87
-
-QUERY: What is the theory of relativity?
-CHOSEN FUNCTION: RAG_query(query)
-ARGUMENTS: "What is the Theory of Relativity?"
-
-QUERY: What is 89 times 44, divided by 3?
-CHOSEN FUNCTION: multiply(a, b)
-ARGUMENTS: 89, 44
-
-QUERY: What is a neural network?
-CHOSEN FUNCTION: search(query)
-ARGUMENTS: "What is a neural network?"
-
-### Real Execution (Only complete the Argument):
-
-QUERY: {query}
-CHOSEN FUNCTION: {self.retrieve_usage(func)} 
-ARGUMENTS: """, max_tokens=200)
+                func_args = model.generate(AGENT_INITIAL_STEP.substitute(query = query, function = self.retrieve_usage(func)), max_tokens=200)
                 print(f'Retrieved Arguments: {func_args}')
                 print(f'Chosen function on step {step} "{func}" with args: {func_args}')
                 result = self.exec_func_by_name(func, func_args)
                 step+=1
             
             else:
-                func_args = model.generate(f"""You are AI Assistant which is a part of a Query Chain where Questions are Answered Step-by-Step. Currently you are on step {str(step+1)}.
-If the step is bigger than 1, that means some result has already been obtained because only one step is done at a time. 
-Your Task is to just return Arguments for a Task which can passed Directly into a Chosen Python Function, Arguments could be one or multiple, based on the User Query in the format given below
-###Format:
-QUERY: (Query by User)
-CHOSEN FUNCTION: (Function Chosen for the Task)
-RESULT TILL CURRENT STEP: (Result Obtained by Operations till the Current Step)
-ARGUMENTS: (Argument/ List of Arguments)
-
-###Examples:
-
-QUERY: What is 89 times 44, divided by 3?
-CHOSEN FUNCTION: division(a, b)
-RESULT TILL CURRENT STEP: 3916
-ARGUMENTS: 3916, 3
-
-###Real Execution (ONLY complete the Argument)
-
-QUERY: {query}
-CHOSEN FUNCTION: {self.retrieve_usage(func)} 
-RESULT TILL CURRENT STEP: {result}
-ARGUMENTS: """)
+                func_args = model.generate(AGENT_DEFAULT_STEP.substitute(query = query, function = self.retrieve_usage(func), step_count = step, result = result), max_tokens=200)
                 print(f'Retrieved Arguments: {func_args}')
                 print(f'Chosen function on step {step} "{func}" with args: {func_args}')
                 result = self.exec_func_by_name(func, func_args)
+                step+=1
         print(f'Got Output: {result}')
         return result
     
@@ -249,14 +185,11 @@ ARGUMENTS: """)
         try:
             if len(self.tools)==0:
                 print('No tools added, Switching to General Chat')
-                output = self.model.generate(f"""You are an AI Assistant, expert at answering General Questions. Help the user with their query. 
-
-    USER: {query}
-
-    ASSISTANT: """, max_tokens=200)
+                output = self.model.generate(GENERAL_CHAT.substitute(query = query), max_tokens=200)
                 return output
             elif len(self.tools)!=0:
                 output = self.agent_execute(query)
+                return output
         except:
             return "Model Not Intialised, Initialise a model by using a GPT4all instance. or use the use_model() Class method."
             
