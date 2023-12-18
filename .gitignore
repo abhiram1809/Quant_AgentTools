@@ -5,4 +5,4 @@ dist/
 # Ignore Quant_AgentTools.egg-info directory
 Quant_AgentTools.egg-info/
 
-Quant_AgentTools/__pycache__/
+__pycache__/
