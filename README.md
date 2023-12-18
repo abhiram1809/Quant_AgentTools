@@ -38,6 +38,8 @@ Next, create an instance of the AgentTools class. You can optionally pass a mode
 
 ```python
 agent = AgentTools(model=my_model)
+#or
+agent = AgentTools(model_name = "mistral-7b-instruct-v0.1.Q4_0.gguf")
 ```
 
 ## Chat
