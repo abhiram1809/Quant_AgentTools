@@ -1,4 +1,6 @@
 # Quant_AgentTools
+
+[<img align="center" src="https://colab.research.google.com/assets/colab-badge.svg" />](https://colab.research.google.com/github/abhiram1809/Quant_AgentTools/blob/main/Notebooks/Quant_AgentTools%20Exemplar%20Usage.ipynb)
 🚀 Revolutionize your workflow with AgentTools! 🤖💼
 
 AgentTools introduces the power of quantized models, enabling seamless local CPU execution for lightning-fast processing. 🌐⚡
