@@ -69,8 +69,8 @@ def div(a,b):
     except:
         return None
 
-agent.add_tool('multiply', mul, "Multiplies two numbers", "mul(a,b)")
-agent.add_tool('division', div, "Divides two numbers", "div(a,b)")
+agent.add_tool('multiply', mul, "Multiplies two numbers", "multiply(a,b)")
+agent.add_tool('division', div, "Divides two numbers", "division(a,b)")
 
 result = agent.chat('What is 89 times 44?')
 print(result)
