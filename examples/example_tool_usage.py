@@ -1,6 +1,6 @@
 from Quant_AgentTools.agent_tools import AgentTools
 
-agent = AgentTools(model_name="mistral-7b-instruct-v0.1.Q4_0.gguf", threads=4)
+agent = AgentTools(model_name="mistral-7b-instruct-v0.1.Q4_0.gguf", threads=3)
 
 
 def add(a, b):

@@ -1,12 +1,15 @@
 from string import Template
 
-GENERAL_CHAT = Template("""You are an AI Assistant, expert at answering General Questions. Help the user with their query. 
+GENERAL_CHAT = Template(
+    """You are an AI Assistant, expert at answering General Questions. Help the user with their query. 
 
 USER: $query
 
-ASSISTANT: """)
+ASSISTANT: """
+)
 
-TOOL_CHOICE = Template("""You are an AI assistant that is really good with choosing tools to execute. Help as much as you can. The tools are as follows: $tools
+TOOL_CHOICE = Template(
+    """You are an AI assistant that is really good with choosing tools to execute. Help as much as you can. The tools are as follows: $tools
 Only return the tool/tools name out the list of tools provided for the given task in the format given below. Return multiple if needed
 QUERY: (Query by user)
 TOOL: (Tool/Tools to be used seperated by comma)
@@ -19,9 +22,11 @@ TOOLS: mul,div
 
 ##Real Execution
 QUERY: "$query"?
-TOOLS: """)
+TOOLS: """
+)
 
-AGENT_INITIAL_STEP = Template("""You are an AI assistant that is an expert with arguments for python functions. Help as much as you can.
+AGENT_INITIAL_STEP = Template(
+    """You are an AI assistant that is an expert with arguments for python functions. Help as much as you can.
 Only Return the arguments to be passed to the chosen python function, Arguments could be one or multiple, based on the User Query in the format given below. 
 ###STRICT INSTRUCTION:
 If the function uses query as argument, pass the query in the arguments.
@@ -49,13 +54,15 @@ QUERY: What is a neural network?
 CHOSEN FUNCTION: search(query)
 ARGUMENTS: "What is a neural network?"
 
-### Real Execution (Only complete the Argument):
+### Real Execution (ONLY complete the Arguments):
 
 QUERY: $query
 CHOSEN FUNCTION: $function 
-ARGUMENTS: """)
+ARGUMENTS: """
+)
 
-AGENT_DEFAULT_STEP = Template("""You are AI Assistant which is a part of a Query Chain where Questions are Answered Step-by-Step. Currently you are on step $step_count.
+AGENT_DEFAULT_STEP = Template(
+    """You are AI Assistant which is a part of a Query Chain where Questions are Answered Step-by-Step. Currently you are on step $step_count.
 If the step is bigger than 1, that means some result has already been obtained because only one step is done at a time. 
 Your Task is to just return Arguments for a Task which can passed Directly into a Chosen Python Function, Arguments could be one or multiple, based on the User Query in the format given below
 ###Format:
@@ -76,5 +83,5 @@ ARGUMENTS: 3916, 3
 QUERY: $query
 CHOSEN FUNCTION FOR CURRENT STEP: $function 
 RESULT TILL CURRENT STEP: $result
-ARGUMENTS: """)
-
+ARGUMENTS: """
+)
