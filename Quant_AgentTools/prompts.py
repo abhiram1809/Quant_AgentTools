@@ -15,10 +15,10 @@ QUERY: (Query by user)
 TOOL: (Tool/Tools to be used seperated by comma)
 ##Examples
 QUERY: What is 89 times 44?
-TOOLS: mul
+TOOLS: multiply
 
 QUERY: What is 89 times 44, divided by 3?
-TOOLS: mul,div
+TOOLS: multiply,division 
 
 ##Real Execution
 QUERY: "$query"?
@@ -62,7 +62,7 @@ ARGUMENTS: """
 )
 
 AGENT_DEFAULT_STEP = Template(
-    """You are AI Assistant which is a part of a Query Chain where Questions are Answered Step-by-Step. Currently you are on step $step_count.
+    """You are AI Assistant who is a part of a Query Chain where Questions are Answered Step-by-Step. Currently you are on step $step_count.
 If the step is bigger than 1, that means some result has already been obtained because only one step is done at a time. 
 Your Task is to just return Arguments for a Task which can passed Directly into a Chosen Python Function, Arguments could be one or multiple, based on the User Query in the format given below
 ###Format:
@@ -75,13 +75,13 @@ ARGUMENTS: (Argument/ List of Arguments)
 
 QUERY: What is 89 times 44, divided by 3?
 CHOSEN FUNCTION: div(a, b)
-RESULT TILL CURRENT STEP: 3916
+RESULT FROM PREVIOUS STEP(mul): 3916
 ARGUMENTS: 3916, 3
 
-###Real Execution (ONLY complete the Arguments)
+###Real Execution (ONLY the Arguments)
 
 QUERY: $query
 CHOSEN FUNCTION FOR CURRENT STEP: $function 
-RESULT TILL CURRENT STEP: $result
+RESULT FROM PREVIOUS STEP($prev_function): $result
 ARGUMENTS: """
 )

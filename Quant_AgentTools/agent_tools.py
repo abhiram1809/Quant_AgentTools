@@ -141,7 +141,7 @@ class AgentTools:
             if tool["name"] == tool_name:
                 try:
                     # Split the string into a list of arguments
-                    args_list = args_string.split(", ")
+                    args_list = args_string.split(",")
 
                     # Use Pydantic to validate the arguments
                     tool_args = parse_obj_as(ToolArguments, {"args": args_list})
@@ -175,32 +175,41 @@ class AgentTools:
         func_list = [func for func in func_choice.split(",")]
         print(f"Chosen function {func_choice}")
         step = 1
-        for func in func_list:
+        for func in range(len(func_list)):
             if step == 1:
                 func_args = model.generate(
                     AGENT_INITIAL_STEP.substitute(
-                        query=query, function=self.retrieve_usage(func)
+                        query=query, function=self.retrieve_usage(func_list[func])
                     ),
                     max_tokens=200,
                 )
+                # Remove Any Waste Output
+                func_args = func_args.split("\n")[0]
                 print(f"Retrieved Arguments: {func_args}")
-                print(f'Chosen function on step {step} "{func}" with args: {func_args}')
-                result = self.exec_func_by_name(func, func_args)
+                print(
+                    f'Chosen function on step {step} "{func_list[func]}" with args: {func_args}'
+                )
+                result = self.exec_func_by_name(func_list[func], func_args)
                 step += 1
 
             else:
                 func_args = model.generate(
                     AGENT_DEFAULT_STEP.substitute(
                         query=query,
-                        function=self.retrieve_usage(func),
+                        function=self.retrieve_usage(func_list[func]),
                         step_count=step,
                         result=result,
+                        prev_function=func_list[func - 1],
                     ),
                     max_tokens=200,
                 )
+                # Remove Any Waste Output
+                func_args = func_args.split("\n")[0]
                 print(f"Retrieved Arguments: {func_args}")
-                print(f'Chosen function on step {step} "{func}" with args: {func_args}')
-                result = self.exec_func_by_name(func, func_args)
+                print(
+                    f'Chosen function on step {step} "{func_list[func]}" with args: {func_args}'
+                )
+                result = self.exec_func_by_name(func_list[func], func_args)
                 step += 1
         print(f"Got Output: {result}")
         return result
@@ -224,5 +233,6 @@ class AgentTools:
             elif len(self.tools) != 0:
                 output = self.agent_execute(query)
                 return output
-        except:
+        except Exception as e:
+            print("Hello This Error Occured: ", e)
             return "Model Not Intialised, Initialise a model by using a GPT4all instance. or use the use_model() Class method."
